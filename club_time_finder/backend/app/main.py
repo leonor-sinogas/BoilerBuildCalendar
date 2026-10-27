@@ -32,6 +32,7 @@ if not DATA_PATH.is_absolute():
     DATA_PATH = (Path(__file__).parent / DATA_PATH).resolve()
 if not USERS_DB_PATH.is_absolute():
     USERS_DB_PATH = (Path(__file__).parent / USERS_DB_PATH).resolve()
+CLASS_YEARS_PATH = (Path(__file__).parent / "../../class_years.md").resolve()
 
 def users_db() -> sqlite3.Connection:
     USERS_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -67,7 +68,22 @@ TIME_PREFERENCES = {
     "after_hours": (16 * 60, 21 * 60),
 }
 
+def course_years() -> dict[str, int]:
+    try:
+        entries = CLASS_YEARS_PATH.read_text().splitlines()
+    except OSError:
+        return {}
+    result = {}
+    for entry in entries:
+        match = re.fullmatch(r"- ([A-Z]+ \d{5}) (\d)", entry)
+        if match:
+            result[match.group(1)] = int(match.group(2))
+    return result
+
+COURSE_YEARS = course_years()
+
 class Filters(BaseModel):
+    source_mode: str = Field(default="student_data", pattern="^(student_data|class_schedule_data)$")
     majors: list[str] = Field(default_factory=list)
     colleges: list[str] = Field(default_factory=list)
     academic_years: list[str] = Field(default_factory=list)
@@ -105,6 +121,10 @@ def canonical_major(student_major: str) -> str:
 
 def college_for_major(major: str) -> str | None:
     return next((college for college, majors in COLLEGE_MAJORS.items() if major in majors), None)
+
+def course_year(course: dict) -> int | None:
+    match = re.match(r"([A-Z]+ \d{5})", course["course_code"])
+    return COURSE_YEARS.get(match.group(1)) if match else None
 
 @app.get("/health")
 def health():
@@ -144,10 +164,16 @@ def recommendations(filters: Filters, _: Annotated[str, Depends(require_user)]):
     if filters.end_hour <= filters.start_hour:
         raise HTTPException(422, "End hour must be after start hour")
     data = dataset()
-    selected = [s for s in data["students"] if (not filters.majors or canonical_major(s["major"]) in filters.majors) and (not filters.colleges or college_for_major(canonical_major(s["major"])) in filters.colleges) and (not filters.academic_years or s["academic_year"] in filters.academic_years)]
-    if not selected:
-        return {"target_students": 0, "recommendations": [], "message": "No students match these filters."}
     course_map = {c["course_id"]: c for c in data["courses"]}
+    selected = [s for s in data["students"] if (not filters.majors or canonical_major(s["major"]) in filters.majors) and (not filters.colleges or college_for_major(canonical_major(s["major"])) in filters.colleges) and (not filters.academic_years or s["academic_year"] in filters.academic_years)]
+    selected_year_numbers = {YEAR_ORDER.index(year) + 1 for year in filters.academic_years if year in YEAR_ORDER}
+    selected_courses = [course for course in data["courses"] if course_year(course) is not None and (not selected_year_numbers or course_year(course) in selected_year_numbers)]
+    if filters.source_mode == "student_data" and not selected:
+        return {"target_students": 0, "recommendations": [], "message": "No students match these filters.", "population_label": "target students"}
+    if filters.source_mode == "class_schedule_data" and not selected_courses:
+        return {"target_students": 0, "recommendations": [], "message": "No class sections with a mapped academic year match these filters.", "population_label": "estimated enrolled seats"}
+    total_population = len(selected) if filters.source_mode == "student_data" else sum(max(course["capacity"] - course["open_seats"], 0) for course in selected_courses)
+    population_label = "target students" if filters.source_mode == "student_data" else "estimated enrolled seats"
     chosen_days = filters.days or WEEK_ORDER
     windows = [(filters.start_hour * 60, filters.end_hour * 60)]
     if filters.time_preferences:
@@ -161,13 +187,15 @@ def recommendations(filters: Filters, _: Annotated[str, Depends(require_user)]):
         for window_start, window_end in windows:
             for start in range(window_start, window_end - filters.duration_minutes + 1, 30):
                 end = start + filters.duration_minutes
-                free = 0
-                for student in selected:
-                    busy = any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for cid in student["course_ids"] for meeting in course_map[cid]["meetings"])
-                    free += not busy
-                results_by_slot[(day, start)] = {"day": day, "start_time": f"{start // 60:02}:{start % 60:02}", "end_time": f"{end // 60:02}:{end % 60:02}", "free_students": free, "busy_students": len(selected) - free, "availability_percent": round(free / len(selected) * 100, 1)}
+                if filters.source_mode == "student_data":
+                    free = sum(not any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for cid in student["course_ids"] for meeting in course_map[cid]["meetings"]) for student in selected)
+                    busy = total_population - free
+                else:
+                    busy = sum(max(course["capacity"] - course["open_seats"], 0) for course in selected_courses if any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for meeting in course["meetings"]))
+                    free = max(total_population - busy, 0)
+                results_by_slot[(day, start)] = {"day": day, "start_time": f"{start // 60:02}:{start % 60:02}", "end_time": f"{end // 60:02}:{end % 60:02}", "free_students": free, "busy_students": busy, "availability_percent": round(free / total_population * 100, 1) if total_population else 0}
     results = list(results_by_slot.values())
     ranked = sorted(results, key=lambda r: (-r["availability_percent"], -r["free_students"], r["day"], r["start_time"]))
     day_order = {day: index for index, day in enumerate(WEEK_ORDER)}
     heatmap = sorted(results, key=lambda r: (day_order.get(r["day"], 99), r["start_time"]))
-    return {"target_students": len(selected), "recommendations": ranked[:12], "heatmap": heatmap}
+    return {"target_students": total_population, "population_label": population_label, "source_mode": filters.source_mode, "recommendations": ranked[:12], "heatmap": heatmap}

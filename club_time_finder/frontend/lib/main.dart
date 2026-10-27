@@ -159,6 +159,7 @@ class _FinderPageState extends State<FinderPage> {
       years = <String>{},
       days = <String>{},
       timePreferences = <String>{};
+  String sourceMode = 'student_data';
   int duration = 60;
   bool loading = true;
   @override
@@ -180,6 +181,7 @@ class _FinderPageState extends State<FinderPage> {
   Future<void> run() async {
     setState(() => loading = true);
     final r = await api.recommend({
+      'source_mode': sourceMode,
       'majors': majors.toList(),
       'colleges': colleges.toList(),
       'academic_years': years.toList(),
@@ -262,7 +264,7 @@ class _FinderPageState extends State<FinderPage> {
       Text('Availability heatmap',
           style: Theme.of(context).textTheme.titleLarge),
       const Text(
-          'Times run top-to-bottom; days run Sunday through Saturday. Darker green means more selected students are class-free.'),
+          'Times run top-to-bottom; days run Sunday through Saturday. Darker green means higher estimated availability.'),
       const SizedBox(height: 10),
       SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -305,8 +307,36 @@ class _FinderPageState extends State<FinderPage> {
                   Text('Choose your audience',
                       style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 8),
-                  const Text(
-                      'Leave a filter empty to include everyone. Scores count unique students free for the whole event.'),
+                  Text(sourceMode == 'student_data'
+                      ? 'Student data counts unique selected students who are class-free for the whole event.'
+                      : 'Class schedule data estimates availability from enrolled seats in sections mapped to each selected course year. It does not identify unique students.'),
+                  const SizedBox(height: 24),
+                  Row(children: [
+                    Expanded(
+                        child: FilledButton(
+                            onPressed: () => setState(() {
+                                  sourceMode = 'student_data';
+                                  response = null;
+                                }),
+                            style: FilledButton.styleFrom(
+                                backgroundColor: sourceMode == 'student_data'
+                                    ? null
+                                    : Colors.grey),
+                            child: const Text('From student data'))),
+                    const SizedBox(width: 12),
+                    Expanded(
+                        child: FilledButton(
+                            onPressed: () => setState(() {
+                                  sourceMode = 'class_schedule_data';
+                                  response = null;
+                                }),
+                            style: FilledButton.styleFrom(
+                                backgroundColor:
+                                    sourceMode == 'class_schedule_data'
+                                        ? null
+                                        : Colors.grey),
+                            child: const Text('From class schedule data')))
+                  ]),
                   const SizedBox(height: 24),
                   chips('Preferred event day(s)', options!['days'], days),
                   const SizedBox(height: 16),
@@ -316,11 +346,24 @@ class _FinderPageState extends State<FinderPage> {
                     'after_hours': 'After hours (4 PM–9 PM, M–F)',
                   }),
                   const SizedBox(height: 16),
-                  chips('Colleges', options!['colleges'], colleges),
-                  const SizedBox(height: 16),
-                  chips('Majors', options!['majors'], majors),
-                  const SizedBox(height: 16),
-                  chips('Academic years', options!['academic_years'], years),
+                  if (sourceMode == 'student_data') ...[
+                    chips('Colleges', options!['colleges'], colleges),
+                    const SizedBox(height: 16),
+                    chips('Majors', options!['majors'], majors),
+                    const SizedBox(height: 16),
+                  ],
+                  chips(
+                      sourceMode == 'student_data'
+                          ? 'Academic years'
+                          : 'Course year(s)',
+                      options!['academic_years'],
+                      years,
+                      const {
+                        'Freshman': '1 - Freshman',
+                        'Sophomore': '2 - Sophomore',
+                        'Junior': '3 - Junior',
+                        'Senior': '4 - Senior',
+                      }),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                       initialValue: duration,
@@ -338,7 +381,7 @@ class _FinderPageState extends State<FinderPage> {
                   if (response != null) ...[
                     const SizedBox(height: 28),
                     Text(
-                        'Best matches · ${response!['target_students']} target students',
+                        'Best matches · ${response!['target_students']} ${response!['population_label']}',
                         style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 8),
                     ...rows.map((r) => Card(
@@ -346,7 +389,7 @@ class _FinderPageState extends State<FinderPage> {
                             title: Text(
                                 '${r['day']} · ${r['start_time']}–${r['end_time']}'),
                             subtitle: Text(
-                                '${r['free_students']} free · ${r['busy_students']} in class'),
+                                '${r['free_students']} estimated free · ${r['busy_students']} in class'),
                             trailing: Text('${r['availability_percent']}%',
                                 style:
                                     Theme.of(context).textTheme.titleLarge)))),
