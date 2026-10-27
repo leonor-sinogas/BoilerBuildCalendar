@@ -1,0 +1,33 @@
+# macOS and editor files
+.DS_Store
+.idea/
+*.iml
+*.swp
+
+# Secrets: keep shareable examples, never local values or key material.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python local environments, caches, and test output
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+
+# Flutter/Dart generated files
+**/.dart_tool/
+**/build/
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+
+# Local runtime data and recoverable database backups
+club_time_finder/backend/data/users.sqlite3
+club_time_finder/backups/
+club_time_finder/infra/backups/
+*.sql.gz
+
+# Local logs
+*.log
