@@ -1,0 +1,691 @@
+{
+  "metadata": {
+    "dataset_name": "dummy_campus_student_schedules",
+    "description": "Synthetic student/course schedules for testing campus availability heatmap calculations.",
+    "synthetic_data": true,
+    "timezone": "America/Indiana/Indianapolis",
+    "time_slot_minutes": 30,
+    "days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "notes": [
+      "All names and records are fictional.",
+      "A student is considered busy during any class meeting interval in their schedule.",
+      "Meeting intervals use 24-hour local time; end_time is exclusive.",
+      "Some courses have multiple sections; students are assigned to specific sections.",
+      "Do not sum course enrollments to estimate unique students, because students take multiple courses."
+    ]
+  },
+  "students": [
+    {
+      "student_id": "S001",
+      "academic_year": "Sophomore",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS180-LEC-01",
+        "MA261-LEC-01",
+        "ENGL106-LEC-01",
+        "CS193-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S002",
+      "academic_year": "Junior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS182-LEC-01",
+        "MA261-LEC-01",
+        "STAT350-LEC-01",
+        "COM217-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S003",
+      "academic_year": "Freshman",
+      "major": "Data Science",
+      "course_ids": [
+        "CS180-LEC-01",
+        "MA161-LEC-01",
+        "ENGL106-LEC-01",
+        "SCLA101-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S004",
+      "academic_year": "Senior",
+      "major": "Data Science",
+      "course_ids": [
+        "STAT350-LEC-01",
+        "CS373-LEC-01",
+        "COM217-LEC-01",
+        "MA261-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S005",
+      "academic_year": "Sophomore",
+      "major": "Mathematics",
+      "course_ids": [
+        "MA261-LEC-01",
+        "MA265-LEC-01",
+        "PHYS272-LEC-01",
+        "ENGL106-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S006",
+      "academic_year": "Junior",
+      "major": "Mathematics",
+      "course_ids": [
+        "MA265-LEC-01",
+        "STAT350-LEC-01",
+        "PHYS272-LEC-01",
+        "HIST105-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S007",
+      "academic_year": "Freshman",
+      "major": "Mechanical Engineering",
+      "course_ids": [
+        "MA161-LEC-01",
+        "PHYS272-LEC-01",
+        "CHEM115-LEC-01",
+        "ENGL106-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S008",
+      "academic_year": "Senior",
+      "major": "Mechanical Engineering",
+      "course_ids": [
+        "ME270-LEC-01",
+        "MA265-LEC-01",
+        "COM217-LEC-01",
+        "HIST105-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S009",
+      "academic_year": "Junior",
+      "major": "Electrical Engineering",
+      "course_ids": [
+        "ECE301-LEC-01",
+        "MA261-LEC-01",
+        "PHYS272-LEC-01",
+        "STAT350-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S010",
+      "academic_year": "Sophomore",
+      "major": "Electrical Engineering",
+      "course_ids": [
+        "ECE200-LEC-01",
+        "MA265-LEC-01",
+        "ENGL106-LEC-01",
+        "SCLA101-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S011",
+      "academic_year": "Freshman",
+      "major": "Biology",
+      "course_ids": [
+        "BIOL121-LEC-01",
+        "CHEM115-LEC-01",
+        "MA161-LEC-01",
+        "ENGL106-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S012",
+      "academic_year": "Senior",
+      "major": "Biology",
+      "course_ids": [
+        "BIOL231-LEC-01",
+        "STAT350-LEC-01",
+        "COM217-LEC-01",
+        "HIST105-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S013",
+      "academic_year": "Junior",
+      "major": "Psychology",
+      "course_ids": [
+        "PSY200-LEC-01",
+        "STAT350-LEC-01",
+        "ENGL106-LEC-01",
+        "COM217-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S014",
+      "academic_year": "Sophomore",
+      "major": "Psychology",
+      "course_ids": [
+        "PSY200-LEC-01",
+        "MA161-LEC-01",
+        "SCLA101-LEC-01",
+        "HIST105-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S015",
+      "academic_year": "Senior",
+      "major": "Economics",
+      "course_ids": [
+        "ECON251-LEC-01",
+        "STAT350-LEC-01",
+        "MA261-LEC-01",
+        "COM217-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S016",
+      "academic_year": "Junior",
+      "major": "Economics",
+      "course_ids": [
+        "ECON251-LEC-01",
+        "MA265-LEC-01",
+        "HIST105-LEC-01",
+        "ENGL106-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S017",
+      "academic_year": "Freshman",
+      "major": "Business Analytics",
+      "course_ids": [
+        "MGMT200-LEC-01",
+        "MA161-LEC-01",
+        "ECON251-LEC-01",
+        "SCLA101-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S018",
+      "academic_year": "Sophomore",
+      "major": "Business Analytics",
+      "course_ids": [
+        "MGMT200-LEC-01",
+        "STAT350-LEC-01",
+        "COM217-LEC-01",
+        "ENGL106-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S019",
+      "academic_year": "Junior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS373-LEC-01",
+        "CS182-LEC-01",
+        "MA265-LEC-01",
+        "HIST105-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S020",
+      "academic_year": "Senior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS373-LEC-01",
+        "ECE301-LEC-01",
+        "STAT350-LEC-01",
+        "COM217-LEC-01"
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "course_id": "CS180-LEC-01",
+      "course_code": "CS 180",
+      "normalized_course_code": "CS 18000",
+      "recommended_academic_year": 1,
+      "course_name": "Problem Solving and Object-Oriented Programming",
+      "section": "LEC-01",
+      "capacity": 120,
+      "open_seats": 12,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS182-LEC-01",
+      "course_code": "CS 182",
+      "normalized_course_code": "CS 18200",
+      "recommended_academic_year": 1,
+      "course_name": "Foundations of Computer Science",
+      "section": "LEC-01",
+      "capacity": 90,
+      "open_seats": 8,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "CS193-LEC-01",
+      "course_code": "CS 193",
+      "normalized_course_code": "CS 19300",
+      "recommended_academic_year": 1,
+      "course_name": "Tools",
+      "section": "LEC-01",
+      "capacity": 40,
+      "open_seats": 5,
+      "meetings": [
+        {
+          "days": [
+            "Friday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS373-LEC-01",
+      "course_code": "CS 373",
+      "normalized_course_code": "CS 37300",
+      "recommended_academic_year": 3,
+      "course_name": "Data Mining and Machine Learning",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 10,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MA161-LEC-01",
+      "course_code": "MA 161",
+      "normalized_course_code": "MA 16100",
+      "recommended_academic_year": 1,
+      "course_name": "Plane Analytic Geometry and Calculus I",
+      "section": "LEC-01",
+      "capacity": 180,
+      "open_seats": 20,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "11:30",
+          "end_time": "12:20"
+        }
+      ]
+    },
+    {
+      "course_id": "MA261-LEC-01",
+      "course_code": "MA 261",
+      "normalized_course_code": "MA 26100",
+      "recommended_academic_year": 2,
+      "course_name": "Multivariate Calculus",
+      "section": "LEC-01",
+      "capacity": 160,
+      "open_seats": 15,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MA265-LEC-01",
+      "course_code": "MA 265",
+      "normalized_course_code": "MA 26500",
+      "recommended_academic_year": 2,
+      "course_name": "Linear Algebra",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 9,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "PHYS272-LEC-01",
+      "course_code": "PHYS 272",
+      "normalized_course_code": "PHYS 27200",
+      "recommended_academic_year": 2,
+      "course_name": "Electric and Magnetic Interactions",
+      "section": "LEC-01",
+      "capacity": 120,
+      "open_seats": 14,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "12:00",
+          "end_time": "13:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ENGL106-LEC-01",
+      "course_code": "ENGL 106",
+      "normalized_course_code": "ENGL 10600",
+      "recommended_academic_year": 1,
+      "course_name": "First-Year Composition",
+      "section": "LEC-01",
+      "capacity": 25,
+      "open_seats": 3,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "STAT350-LEC-01",
+      "course_code": "STAT 350",
+      "normalized_course_code": "STAT 35000",
+      "recommended_academic_year": 2,
+      "course_name": "Introduction to Statistics",
+      "section": "LEC-01",
+      "capacity": 150,
+      "open_seats": 18,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "COM217-LEC-01",
+      "course_code": "COM 217",
+      "normalized_course_code": "COM 21700",
+      "recommended_academic_year": 1,
+      "course_name": "Science Writing and Presentation",
+      "section": "LEC-01",
+      "capacity": 60,
+      "open_seats": 6,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    },
+    {
+      "course_id": "SCLA101-LEC-01",
+      "course_code": "SCLA 101",
+      "normalized_course_code": "SCLA 10100",
+      "recommended_academic_year": 1,
+      "course_name": "Transformative Texts",
+      "section": "LEC-01",
+      "capacity": 35,
+      "open_seats": 4,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "CHEM115-LEC-01",
+      "course_code": "CHEM 115",
+      "normalized_course_code": "CHEM 11500",
+      "recommended_academic_year": 1,
+      "course_name": "General Chemistry",
+      "section": "LEC-01",
+      "capacity": 140,
+      "open_seats": 16,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "08:30",
+          "end_time": "09:20"
+        }
+      ]
+    },
+    {
+      "course_id": "HIST105-LEC-01",
+      "course_code": "HIST 105",
+      "normalized_course_code": "HIST 10500",
+      "recommended_academic_year": 2,
+      "course_name": "Survey of Global History",
+      "section": "LEC-01",
+      "capacity": 70,
+      "open_seats": 7,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "13:00",
+          "end_time": "14:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ME270-LEC-01",
+      "course_code": "ME 270",
+      "normalized_course_code": "ME 27000",
+      "recommended_academic_year": 2,
+      "course_name": "Basic Mechanics I",
+      "section": "LEC-01",
+      "capacity": 90,
+      "open_seats": 11,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE301-LEC-01",
+      "course_code": "ECE 301",
+      "normalized_course_code": "ECE 30100",
+      "recommended_academic_year": 2,
+      "course_name": "Signals and Systems",
+      "section": "LEC-01",
+      "capacity": 80,
+      "open_seats": 9,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE200-LEC-01",
+      "course_code": "ECE 200",
+      "normalized_course_code": "ECE 20000",
+      "course_name": "Electrical Engineering Fundamentals",
+      "section": "LEC-01",
+      "capacity": 75,
+      "open_seats": 6,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "11:00",
+          "end_time": "11:50"
+        }
+      ]
+    },
+    {
+      "course_id": "BIOL121-LEC-01",
+      "course_code": "BIOL 121",
+      "normalized_course_code": "BIOL 12100",
+      "recommended_academic_year": 1,
+      "course_name": "Animal Biology",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 13,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "BIOL231-LEC-01",
+      "course_code": "BIOL 231",
+      "normalized_course_code": "BIOL 23100",
+      "recommended_academic_year": 2,
+      "course_name": "Molecular Biology",
+      "section": "LEC-01",
+      "capacity": 65,
+      "open_seats": 5,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "PSY200-LEC-01",
+      "course_code": "PSY 200",
+      "normalized_course_code": "PSY 20000",
+      "recommended_academic_year": 2,
+      "course_name": "Introduction to Cognitive Psychology",
+      "section": "LEC-01",
+      "capacity": 110,
+      "open_seats": 12,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECON251-LEC-01",
+      "course_code": "ECON 251",
+      "normalized_course_code": "ECON 25100",
+      "recommended_academic_year": 2,
+      "course_name": "Microeconomics",
+      "section": "LEC-01",
+      "capacity": 130,
+      "open_seats": 17,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MGMT200-LEC-01",
+      "course_code": "MGMT 200",
+      "normalized_course_code": "MGMT 20000",
+      "recommended_academic_year": 2,
+      "course_name": "Introductory Accounting",
+      "section": "LEC-01",
+      "capacity": 95,
+      "open_seats": 10,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    }
+  ]
+}

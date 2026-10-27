@@ -1,0 +1,1285 @@
+{
+  "metadata": {
+    "dataset_name": "dummy_campus_student_schedules",
+    "description": "Synthetic student/course schedules for testing campus availability heatmap calculations.",
+    "synthetic_data": true,
+    "timezone": "America/Indiana/Indianapolis",
+    "time_slot_minutes": 30,
+    "days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "notes": [
+      "All names and records are fictional.",
+      "A student is considered busy during any class meeting interval in their schedule.",
+      "Meeting intervals use 24-hour local time; end_time is exclusive.",
+      "Some courses have multiple sections; students are assigned to specific sections.",
+      "Do not sum course enrollments to estimate unique students, because students take multiple courses."
+    ]
+  },
+  "students": [
+    {
+      "student_id": "S001",
+      "academic_year": "Sophomore",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS18000-LEC-01",
+        "MA26100-LEC-01",
+        "ENGL10600-LEC-01",
+        "CS19300-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S002",
+      "academic_year": "Junior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS18200-LEC-01",
+        "MA26100-LEC-01",
+        "STAT35000-LEC-01",
+        "COM21700-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S003",
+      "academic_year": "Freshman",
+      "major": "Data Science",
+      "course_ids": [
+        "CS18000-LEC-01",
+        "MA16100-LEC-01",
+        "ENGL10600-LEC-01",
+        "SCLA10100-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S004",
+      "academic_year": "Senior",
+      "major": "Data Science",
+      "course_ids": [
+        "STAT35000-LEC-01",
+        "CS37300-LEC-01",
+        "COM21700-LEC-01",
+        "MA26100-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S005",
+      "academic_year": "Sophomore",
+      "major": "Mathematics",
+      "course_ids": [
+        "MA26100-LEC-01",
+        "MA26500-LEC-01",
+        "PHYS27200-LEC-01",
+        "ENGL10600-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S006",
+      "academic_year": "Junior",
+      "major": "Mathematics",
+      "course_ids": [
+        "MA26500-LEC-01",
+        "STAT35000-LEC-01",
+        "PHYS27200-LEC-01",
+        "HIST10500-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S007",
+      "academic_year": "Freshman",
+      "major": "Mechanical Engineering",
+      "course_ids": [
+        "MA16100-LEC-01",
+        "PHYS27200-LEC-01",
+        "CHEM11500-LEC-01",
+        "ENGL10600-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S008",
+      "academic_year": "Senior",
+      "major": "Mechanical Engineering",
+      "course_ids": [
+        "ME27000-LEC-01",
+        "MA26500-LEC-01",
+        "COM21700-LEC-01",
+        "HIST10500-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S009",
+      "academic_year": "Junior",
+      "major": "Electrical Engineering",
+      "course_ids": [
+        "ECE30100-LEC-01",
+        "MA26100-LEC-01",
+        "PHYS27200-LEC-01",
+        "STAT35000-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S010",
+      "academic_year": "Sophomore",
+      "major": "Electrical Engineering",
+      "course_ids": [
+        "ECE20000-LEC-01",
+        "MA26500-LEC-01",
+        "ENGL10600-LEC-01",
+        "SCLA10100-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S011",
+      "academic_year": "Freshman",
+      "major": "Biology",
+      "course_ids": [
+        "BIOL12100-LEC-01",
+        "CHEM11500-LEC-01",
+        "MA16100-LEC-01",
+        "ENGL10600-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S012",
+      "academic_year": "Senior",
+      "major": "Biology",
+      "course_ids": [
+        "BIOL23100-LEC-01",
+        "STAT35000-LEC-01",
+        "COM21700-LEC-01",
+        "HIST10500-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S013",
+      "academic_year": "Junior",
+      "major": "Psychology",
+      "course_ids": [
+        "PSY20000-LEC-01",
+        "STAT35000-LEC-01",
+        "ENGL10600-LEC-01",
+        "COM21700-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S014",
+      "academic_year": "Sophomore",
+      "major": "Psychology",
+      "course_ids": [
+        "PSY20000-LEC-01",
+        "MA16100-LEC-01",
+        "SCLA10100-LEC-01",
+        "HIST10500-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S015",
+      "academic_year": "Senior",
+      "major": "Economics",
+      "course_ids": [
+        "ECON25100-LEC-01",
+        "STAT35000-LEC-01",
+        "MA26100-LEC-01",
+        "COM21700-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S016",
+      "academic_year": "Junior",
+      "major": "Economics",
+      "course_ids": [
+        "ECON25100-LEC-01",
+        "MA26500-LEC-01",
+        "HIST10500-LEC-01",
+        "ENGL10600-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S017",
+      "academic_year": "Freshman",
+      "major": "Business Analytics",
+      "course_ids": [
+        "MGMT20000-LEC-01",
+        "MA16100-LEC-01",
+        "ECON25100-LEC-01",
+        "SCLA10100-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S018",
+      "academic_year": "Sophomore",
+      "major": "Business Analytics",
+      "course_ids": [
+        "MGMT20000-LEC-01",
+        "STAT35000-LEC-01",
+        "COM21700-LEC-01",
+        "ENGL10600-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S019",
+      "academic_year": "Junior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS37300-LEC-01",
+        "CS18200-LEC-01",
+        "MA26500-LEC-01",
+        "HIST10500-LEC-01"
+      ]
+    },
+    {
+      "student_id": "S020",
+      "academic_year": "Senior",
+      "major": "Computer Science",
+      "course_ids": [
+        "CS37300-LEC-01",
+        "ECE30100-LEC-01",
+        "STAT35000-LEC-01",
+        "COM21700-LEC-01"
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "course_id": "CS18000-LEC-01",
+      "course_code": "CS 18000",
+      "course_name": "Problem Solving and Object-Oriented Programming",
+      "section": "LEC-01",
+      "capacity": 120,
+      "open_seats": 12,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS18200-LEC-01",
+      "course_code": "CS 18200",
+      "course_name": "Foundations of Computer Science",
+      "section": "LEC-01",
+      "capacity": 90,
+      "open_seats": 8,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "CS19300-LEC-01",
+      "course_code": "CS 19300",
+      "course_name": "Tools",
+      "section": "LEC-01",
+      "capacity": 40,
+      "open_seats": 5,
+      "meetings": [
+        {
+          "days": [
+            "Friday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS37300-LEC-01",
+      "course_code": "CS 37300",
+      "course_name": "Data Mining and Machine Learning",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 10,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MA16100-LEC-01",
+      "course_code": "MA 16100",
+      "course_name": "Plane Analytic Geometry and Calculus I",
+      "section": "LEC-01",
+      "capacity": 180,
+      "open_seats": 20,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "11:30",
+          "end_time": "12:20"
+        }
+      ]
+    },
+    {
+      "course_id": "MA26100-LEC-01",
+      "course_code": "MA 26100",
+      "course_name": "Multivariate Calculus",
+      "section": "LEC-01",
+      "capacity": 160,
+      "open_seats": 15,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MA26500-LEC-01",
+      "course_code": "MA 26500",
+      "course_name": "Linear Algebra",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 9,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "PHYS27200-LEC-01",
+      "course_code": "PHYS 27200",
+      "course_name": "Electric and Magnetic Interactions",
+      "section": "LEC-01",
+      "capacity": 120,
+      "open_seats": 14,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "12:00",
+          "end_time": "13:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ENGL10600-LEC-01",
+      "course_code": "ENGL 10600",
+      "course_name": "First-Year Composition",
+      "section": "LEC-01",
+      "capacity": 25,
+      "open_seats": 3,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "STAT35000-LEC-01",
+      "course_code": "STAT 35000",
+      "course_name": "Introduction to Statistics",
+      "section": "LEC-01",
+      "capacity": 150,
+      "open_seats": 18,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "COM21700-LEC-01",
+      "course_code": "COM 21700",
+      "course_name": "Science Writing and Presentation",
+      "section": "LEC-01",
+      "capacity": 60,
+      "open_seats": 6,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    },
+    {
+      "course_id": "SCLA10100-LEC-01",
+      "course_code": "SCLA 10100",
+      "course_name": "Transformative Texts",
+      "section": "LEC-01",
+      "capacity": 35,
+      "open_seats": 4,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "CHEM11500-LEC-01",
+      "course_code": "CHEM 11500",
+      "course_name": "General Chemistry",
+      "section": "LEC-01",
+      "capacity": 140,
+      "open_seats": 16,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "08:30",
+          "end_time": "09:20"
+        }
+      ]
+    },
+    {
+      "course_id": "HIST10500-LEC-01",
+      "course_code": "HIST 10500",
+      "course_name": "Survey of Global History",
+      "section": "LEC-01",
+      "capacity": 70,
+      "open_seats": 7,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "13:00",
+          "end_time": "14:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ME27000-LEC-01",
+      "course_code": "ME 27000",
+      "course_name": "Basic Mechanics I",
+      "section": "LEC-01",
+      "capacity": 90,
+      "open_seats": 11,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE30100-LEC-01",
+      "course_code": "ECE 30100",
+      "course_name": "Signals and Systems",
+      "section": "LEC-01",
+      "capacity": 80,
+      "open_seats": 9,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20000-LEC-01",
+      "course_code": "ECE 20000",
+      "course_name": "Electrical Engineering Fundamentals",
+      "section": "LEC-01",
+      "capacity": 75,
+      "open_seats": 6,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "11:00",
+          "end_time": "11:50"
+        }
+      ]
+    },
+    {
+      "course_id": "BIOL12100-LEC-01",
+      "course_code": "BIOL 12100",
+      "course_name": "Animal Biology",
+      "section": "LEC-01",
+      "capacity": 100,
+      "open_seats": 13,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "BIOL23100-LEC-01",
+      "course_code": "BIOL 23100",
+      "course_name": "Molecular Biology",
+      "section": "LEC-01",
+      "capacity": 65,
+      "open_seats": 5,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "15:30",
+          "end_time": "16:45"
+        }
+      ]
+    },
+    {
+      "course_id": "PSY20000-LEC-01",
+      "course_code": "PSY 20000",
+      "course_name": "Introduction to Cognitive Psychology",
+      "section": "LEC-01",
+      "capacity": 110,
+      "open_seats": 12,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECON25100-LEC-01",
+      "course_code": "ECON 25100",
+      "course_name": "Microeconomics",
+      "section": "LEC-01",
+      "capacity": 130,
+      "open_seats": 17,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MGMT20000-LEC-01",
+      "course_code": "MGMT 20000",
+      "course_name": "Introductory Accounting",
+      "section": "LEC-01",
+      "capacity": 95,
+      "open_seats": 10,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "14:00",
+          "end_time": "15:15"
+        }
+      ]
+    },
+    {
+      "course_id": "CS24300-LEC-PIN",
+      "course_code": "CS 24300",
+      "course_name": "Artificial Intelligence Basics",
+      "section": "LEC-PIN",
+      "capacity": 30,
+      "open_seats": 15,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS25000-LEC-PIN",
+      "course_code": "CS 25000",
+      "course_name": "Computer Architecture",
+      "section": "LEC-PIN",
+      "capacity": 70,
+      "open_seats": 27,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:45"
+        }
+      ]
+    },
+    {
+      "course_id": "SCLA10200-LEC-295",
+      "course_code": "SCLA 10200",
+      "course_name": "Crit Think & Com II",
+      "section": "LEC-295",
+      "capacity": 30,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "SCLA10100-LEC-259",
+      "course_code": "SCLA 10100",
+      "course_name": "Crit Think & Com I",
+      "section": "LEC-259",
+      "capacity": 30,
+      "open_seats": 8,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "15:00",
+          "end_time": "16:15"
+        }
+      ]
+    },
+    {
+      "course_id": "CS25100-LEC-PIN",
+      "course_code": "CS 25100",
+      "course_name": "Data Structures And Algorithms",
+      "section": "LEC-PIN",
+      "capacity": 70,
+      "open_seats": 29,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "14:30",
+          "end_time": "15:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20869-LEC-003",
+      "course_code": "ECE 20869",
+      "course_name": "Discrete Math For Comput Engr",
+      "section": "LEC-003",
+      "capacity": 95,
+      "open_seats": 59,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "08:30",
+          "end_time": "09:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20008-LAB-010",
+      "course_code": "ECE 20008",
+      "course_name": "Elec Engr Fundamentals II Lab",
+      "section": "LAB-010",
+      "capacity": 30,
+      "open_seats": 18,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday"
+          ],
+          "start_time": "11:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20007-LAB-029",
+      "course_code": "ECE 20007",
+      "course_name": "Elec Engr Fundamentals I Lab",
+      "section": "LAB-029",
+      "capacity": 30,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday"
+          ],
+          "start_time": "09:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20002-LEC-003",
+      "course_code": "ECE 20002",
+      "course_name": "Elect Engr Fundamental II",
+      "section": "LEC-003",
+      "capacity": 80,
+      "open_seats": 36,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "COM21700-LEC-049",
+      "course_code": "COM 21700",
+      "course_name": "Science Writing & Presentation",
+      "section": "LEC-049",
+      "capacity": 20,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "CS25200-LEC-PIN",
+      "course_code": "CS 25200",
+      "course_name": "Systems Programming",
+      "section": "LEC-PIN",
+      "capacity": 47,
+      "open_seats": 32,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20875-LEC-005",
+      "course_code": "ECE 20875",
+      "course_name": "Data Science Using Python",
+      "section": "LEC-005",
+      "capacity": 70,
+      "open_seats": 29,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ME20000-LEC-020",
+      "course_code": "ME 20000",
+      "course_name": "Thermodynamics I",
+      "section": "LEC-020",
+      "capacity": 70,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS25300-LEC-PIN",
+      "course_code": "CS 25300",
+      "course_name": "Data Structs & Algs For DS/AI",
+      "section": "LEC-PIN",
+      "capacity": 20,
+      "open_seats": 15,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "13:30",
+          "end_time": "14:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE26400-LEC-003",
+      "course_code": "ECE 26400",
+      "course_name": "Advanced C Programming",
+      "section": "LEC-003",
+      "capacity": 44,
+      "open_seats": 3,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "16:30",
+          "end_time": "17:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ME27000-LEC-031",
+      "course_code": "ME 27000",
+      "course_name": "Basic Mechanics I",
+      "section": "LEC-031",
+      "capacity": 95,
+      "open_seats": 25,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS30700-LEC-PIN",
+      "course_code": "CS 30700",
+      "course_name": "Software Engineering I",
+      "section": "LEC-PIN",
+      "capacity": 30,
+      "open_seats": 19,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE27000-LEC-016",
+      "course_code": "ECE 27000",
+      "course_name": "Intro Digitl Sys Desgn",
+      "section": "LEC-016",
+      "capacity": 80,
+      "open_seats": 42,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:00",
+          "end_time": "10:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ME27400-LEC-009",
+      "course_code": "ME 27400",
+      "course_name": "Basic Mechanics II",
+      "section": "LEC-009",
+      "capacity": 65,
+      "open_seats": 14,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "07:30",
+          "end_time": "08:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS34800-LEC-PIN",
+      "course_code": "CS 34800",
+      "course_name": "Information Systems",
+      "section": "LEC-PIN",
+      "capacity": 30,
+      "open_seats": 6,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "15:00",
+          "end_time": "16:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE29401-LEC-007",
+      "course_code": "ECE 29401",
+      "course_name": "ECE Sophomore Seminar",
+      "section": "LEC-007",
+      "capacity": 90,
+      "open_seats": 21,
+      "meetings": [
+        {
+          "days": [
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ME30000-LEC-005",
+      "course_code": "ME 30000",
+      "course_name": "Thermodynamics II",
+      "section": "LEC-005",
+      "capacity": 30,
+      "open_seats": 18,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS37300-LEC-PIN",
+      "course_code": "CS 37300",
+      "course_name": "Data Mining & Machine Learning",
+      "section": "LEC-PIN",
+      "capacity": 28,
+      "open_seats": 5,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "12:00",
+          "end_time": "13:15"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE30100-LEC-005",
+      "course_code": "ECE 30100",
+      "course_name": "Signals And Systems",
+      "section": "LEC-005",
+      "capacity": 80,
+      "open_seats": 28,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "07:30",
+          "end_time": "08:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ME32300-LEC-007",
+      "course_code": "ME 32300",
+      "course_name": "Mechanics Of Material",
+      "section": "LEC-007",
+      "capacity": 80,
+      "open_seats": 26,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "08:30",
+          "end_time": "09:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS38100-LEC-PIN",
+      "course_code": "CS 38100",
+      "course_name": "Intro Analysis Algor",
+      "section": "LEC-PIN",
+      "capacity": 20,
+      "open_seats": 4,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "16:30",
+          "end_time": "17:45"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE36200-LEC-015",
+      "course_code": "ECE 36200",
+      "course_name": "Micropro Sys & Intrfac",
+      "section": "LEC-015",
+      "capacity": 70,
+      "open_seats": 27,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "15:00",
+          "end_time": "16:15"
+        }
+      ]
+    },
+    {
+      "course_id": "MSE23000-REC-018",
+      "course_code": "MSE 23000",
+      "course_name": "Struc & Prop Of Mat",
+      "section": "REC-018",
+      "capacity": 42,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS47300-LEC-PIN",
+      "course_code": "CS 47300",
+      "course_name": "Web Info Search & Management",
+      "section": "LEC-PIN",
+      "capacity": 20,
+      "open_seats": 9,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ],
+          "start_time": "12:30",
+          "end_time": "13:20"
+        }
+      ]
+    },
+    {
+      "course_id": "ECE20001-LEC-045",
+      "course_code": "ECE 20001",
+      "course_name": "Electrical Engr Fundamentals I",
+      "section": "LEC-045",
+      "capacity": 100,
+      "open_seats": 1,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "14:30",
+          "end_time": "15:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS15900-LEC-PI1",
+      "course_code": "CS 15900",
+      "course_name": "C Programming",
+      "section": "LEC-PI1",
+      "capacity": 90,
+      "open_seats": 38,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday",
+            "Thursday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS19000CCC-LEC-CCC",
+      "course_code": "CS 19000CCC",
+      "course_name": "College Career Community In CS",
+      "section": "LEC-CCC",
+      "capacity": 120,
+      "open_seats": 77,
+      "meetings": [
+        {
+          "days": [
+            "Tuesday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS17600-LEC-PIN",
+      "course_code": "CS 17600",
+      "course_name": "Data Engineering In Python",
+      "section": "LEC-PIN",
+      "capacity": 35,
+      "open_seats": 20,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "09:30",
+          "end_time": "10:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS24000-LEC-PIN",
+      "course_code": "CS 24000",
+      "course_name": "Programming In C",
+      "section": "LEC-PIN",
+      "capacity": 35,
+      "open_seats": 14,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "10:30",
+          "end_time": "11:20"
+        }
+      ]
+    },
+    {
+      "course_id": "CS24200-LEC-PIN",
+      "course_code": "CS 24200",
+      "course_name": "Introduction To Data Science",
+      "section": "LEC-PIN",
+      "capacity": 30,
+      "open_seats": 26,
+      "meetings": [
+        {
+          "days": [
+            "Monday",
+            "Wednesday"
+          ],
+          "start_time": "11:30",
+          "end_time": "12:20"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: clubtime
+      POSTGRES_USER: clubtime_app
+      POSTGRES_PASSWORD: change-this-local-password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clubtime_app -d clubtime"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # No host port: API and backups communicate over Docker's internal network.
+volumes:
+  postgres_data:
