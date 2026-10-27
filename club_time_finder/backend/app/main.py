@@ -61,6 +61,15 @@ MAJOR_ALIASES = {
     "Electrical Engineering": "EE", "Mechanical Engineering": "ME",
 }
 YEAR_ORDER = ["Freshman", "Sophomore", "Junior", "Senior"]
+# Planning baseline supplied for the Indianapolis campus.  These figures are
+# deliberately kept separate from the small local schedule sample so the app
+# can estimate an audience at campus scale.
+YEAR_POPULATION = {
+    "Freshman": 756,   # 30% of 2,520
+    "Sophomore": 630,  # 25% of 2,520
+    "Junior": 580,     # 23% of 2,520, rounded
+    "Senior": 554,     # Remaining students; total is exactly 2,520
+}
 WEEK_ORDER = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 TIME_PREFERENCES = {
@@ -68,19 +77,23 @@ TIME_PREFERENCES = {
     "after_hours": (16 * 60, 21 * 60),
 }
 
-def course_years() -> dict[str, int]:
+CLASS_MAJOR_ALIASES = {"CE": "CompE", "MSPE": "MotorsportsE", "IE": "IndustrialE"}
+
+def course_catalog() -> dict[str, dict]:
     try:
         entries = CLASS_YEARS_PATH.read_text().splitlines()
     except OSError:
         return {}
-    result = {}
+    result: dict[str, dict] = {}
     for entry in entries:
-        match = re.fullmatch(r"- ([A-Z]+ \d{5}) (\d)", entry)
+        match = re.fullmatch(r"- ([A-Z]+ \d{5}) (\d(?:\.5)?)(?: (.*))?", entry.strip())
         if match:
-            result[match.group(1)] = int(match.group(2))
+            majors = {CLASS_MAJOR_ALIASES.get(major.strip(), major.strip()) for major in (match.group(3) or "").split(",") if major.strip()}
+            result[match.group(1)] = {"year": float(match.group(2)), "majors": majors}
     return result
 
-COURSE_YEARS = course_years()
+COURSE_CATALOG = course_catalog()
+COURSE_YEARS = {code: info["year"] for code, info in COURSE_CATALOG.items()}
 
 class Filters(BaseModel):
     source_mode: str = Field(default="student_data", pattern="^(student_data|class_schedule_data)$")
@@ -90,6 +103,7 @@ class Filters(BaseModel):
     duration_minutes: int = Field(default=60, ge=30, le=240, multiple_of=30)
     days: list[str] = Field(default_factory=list)
     time_preferences: list[str] = Field(default_factory=list)
+    semester: int = Field(default=1, ge=1, le=2)
     start_hour: int = Field(default=8, ge=0, le=23)
     end_hour: int = Field(default=20, ge=1, le=24)
 
@@ -122,9 +136,35 @@ def canonical_major(student_major: str) -> str:
 def college_for_major(major: str) -> str | None:
     return next((college for college, majors in COLLEGE_MAJORS.items() if major in majors), None)
 
-def course_year(course: dict) -> int | None:
+def course_year(course: dict) -> float | None:
     match = re.match(r"([A-Z]+ \d{5})", course["course_code"])
     return COURSE_YEARS.get(match.group(1)) if match else None
+
+def course_majors(course: dict) -> set[str]:
+    match = re.match(r"([A-Z]+ \d{5})", course["course_code"])
+    return COURSE_CATALOG.get(match.group(1), {}).get("majors", set()) if match else set()
+
+def estimated_target_population(data: dict, filters: Filters) -> int:
+    """Estimate the selected audience from the campus population baseline.
+
+    Academic-year filters use the supplied campus totals directly.  When a
+    major or college is also selected, the matching share of the local student
+    sample is used to estimate that share within each academic year.
+    """
+    target_years = filters.academic_years or YEAR_ORDER
+    estimate = 0.0
+    for year in target_years:
+        cohort = [student for student in data["students"] if student["academic_year"] == year]
+        if not cohort:
+            continue
+        matching = [
+            student for student in cohort
+            if (not filters.majors or canonical_major(student["major"]) in filters.majors)
+            and (not filters.colleges or college_for_major(canonical_major(student["major"])) in filters.colleges)
+        ]
+        share = len(matching) / len(cohort) if (filters.majors or filters.colleges) else 1.0
+        estimate += YEAR_POPULATION[year] * share
+    return round(estimate)
 
 @app.get("/health")
 def health():
@@ -167,15 +207,20 @@ def recommendations(filters: Filters, _: Annotated[str, Depends(require_user)]):
     course_map = {c["course_id"]: c for c in data["courses"]}
     selected = [s for s in data["students"] if (not filters.majors or canonical_major(s["major"]) in filters.majors) and (not filters.colleges or college_for_major(canonical_major(s["major"])) in filters.colleges) and (not filters.academic_years or s["academic_year"] in filters.academic_years)]
     selected_year_numbers = {YEAR_ORDER.index(year) + 1 for year in filters.academic_years if year in YEAR_ORDER}
-    selected_courses = [course for course in data["courses"] if course_year(course) is not None and (not selected_year_numbers or course_year(course) in selected_year_numbers)]
+    base_years = selected_year_numbers or set(range(1, 5))
+    semester_offset = 0.0 if filters.semester == 1 else 0.5
+    selected_course_years = {year + semester_offset for year in base_years}
+    selected_courses = [course for course in data["courses"] if course_year(course) in selected_course_years and (not filters.majors or course_majors(course) & set(filters.majors)) and (not filters.colleges or any(college_for_major(major) in filters.colleges for major in course_majors(course)))]
     if filters.source_mode == "student_data" and not selected:
         return {"target_students": 0, "recommendations": [], "message": "No students match these filters.", "population_label": "target students"}
     if filters.source_mode == "class_schedule_data" and not selected_courses:
-        return {"target_students": 0, "recommendations": [], "message": "No class sections with a mapped academic year match these filters.", "population_label": "estimated enrolled seats"}
-    total_population = len(selected) if filters.source_mode == "student_data" else sum(max(course["capacity"] - course["open_seats"], 0) for course in selected_courses)
-    population_label = "target students" if filters.source_mode == "student_data" else "estimated enrolled seats"
+        term = "Fall" if filters.semester == 1 else "Spring"
+        return {"target_students": 0, "recommendations": [], "message": f"No {term} class sections match these filters.", "population_label": "estimated target students"}
+    total_population = estimated_target_population(data, filters)
+    population_label = "estimated target students"
     chosen_days = filters.days or WEEK_ORDER
     windows = [(filters.start_hour * 60, filters.end_hour * 60)]
+    time_preference_selected = bool(filters.time_preferences)
     if filters.time_preferences:
         invalid = set(filters.time_preferences) - set(TIME_PREFERENCES)
         if invalid:
@@ -185,10 +230,15 @@ def recommendations(filters: Filters, _: Annotated[str, Depends(require_user)]):
     results_by_slot = {}
     for day in chosen_days:
         for window_start, window_end in windows:
-            for start in range(window_start, window_end - filters.duration_minutes + 1, 30):
+            # Preset time preferences describe valid *start* times.  For example,
+            # Business Hours includes every weekday start from 9:00 AM through
+            # 5:00 PM, even when the chosen event duration ends later.
+            last_start = window_end if time_preference_selected else window_end - filters.duration_minutes
+            for start in range(window_start, last_start + 1, 30):
                 end = start + filters.duration_minutes
                 if filters.source_mode == "student_data":
-                    free = sum(not any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for cid in student["course_ids"] for meeting in course_map[cid]["meetings"]) for student in selected)
+                    sample_free = sum(not any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for cid in student["course_ids"] for meeting in course_map[cid]["meetings"]) for student in selected)
+                    free = round(total_population * sample_free / len(selected))
                     busy = total_population - free
                 else:
                     busy = sum(max(course["capacity"] - course["open_seats"], 0) for course in selected_courses if any(day in meeting["days"] and minutes(meeting["start_time"]) < end and minutes(meeting["end_time"]) > start for meeting in course["meetings"]))
@@ -198,4 +248,4 @@ def recommendations(filters: Filters, _: Annotated[str, Depends(require_user)]):
     ranked = sorted(results, key=lambda r: (-r["availability_percent"], -r["free_students"], r["day"], r["start_time"]))
     day_order = {day: index for index, day in enumerate(WEEK_ORDER)}
     heatmap = sorted(results, key=lambda r: (day_order.get(r["day"], 99), r["start_time"]))
-    return {"target_students": total_population, "population_label": population_label, "source_mode": filters.source_mode, "recommendations": ranked[:12], "heatmap": heatmap}
+    return {"target_students": total_population, "population_label": population_label, "population_assumption": "2,520 Indianapolis students: 30% freshman, 25% sophomore, 23% junior, 22% senior.", "semester": filters.semester, "source_mode": filters.source_mode, "recommendations": ranked[:12], "heatmap": heatmap}

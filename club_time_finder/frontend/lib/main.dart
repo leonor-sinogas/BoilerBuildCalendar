@@ -160,6 +160,7 @@ class _FinderPageState extends State<FinderPage> {
       days = <String>{},
       timePreferences = <String>{};
   String sourceMode = 'student_data';
+  int semester = 1;
   int duration = 60;
   bool loading = true;
   @override
@@ -187,7 +188,8 @@ class _FinderPageState extends State<FinderPage> {
       'academic_years': years.toList(),
       'days': days.toList(),
       'time_preferences': timePreferences.toList(),
-      'duration_minutes': duration
+      'duration_minutes': duration,
+      'semester': semester,
     });
     if (mounted) {
       setState(() {
@@ -308,8 +310,8 @@ class _FinderPageState extends State<FinderPage> {
                       style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 8),
                   Text(sourceMode == 'student_data'
-                      ? 'Student data counts unique selected students who are class-free for the whole event.'
-                      : 'Class schedule data estimates availability from enrolled seats in sections mapped to each selected course year. It does not identify unique students.'),
+                      ? 'Student data scales local class-free patterns to the Indianapolis planning population.'
+                      : 'Class schedule data estimates conflicts from enrolled seats in sections mapped to each selected course year.'),
                   const SizedBox(height: 24),
                   Row(children: [
                     Expanded(
@@ -342,16 +344,14 @@ class _FinderPageState extends State<FinderPage> {
                   const SizedBox(height: 16),
                   chips('Time preference', options!['time_preferences'],
                       timePreferences, const {
-                    'business_hours': 'Business hours (9 AM–5 PM, M–F)',
-                    'after_hours': 'After hours (4 PM–9 PM, M–F)',
+                    'business_hours': 'Business hours (starts 9 AM–5 PM, M–F)',
+                    'after_hours': 'After hours (starts 4 PM–9 PM, M–F)',
                   }),
                   const SizedBox(height: 16),
-                  if (sourceMode == 'student_data') ...[
-                    chips('Colleges', options!['colleges'], colleges),
-                    const SizedBox(height: 16),
-                    chips('Majors', options!['majors'], majors),
-                    const SizedBox(height: 16),
-                  ],
+                  chips('Colleges', options!['colleges'], colleges),
+                  const SizedBox(height: 16),
+                  chips('Majors', options!['majors'], majors),
+                  const SizedBox(height: 16),
                   chips(
                       sourceMode == 'student_data'
                           ? 'Academic years'
@@ -364,6 +364,39 @@ class _FinderPageState extends State<FinderPage> {
                         'Junior': '3 - Junior',
                         'Senior': '4 - Senior',
                       }),
+                  const SizedBox(height: 16),
+                  Text('Semester',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  Row(children: [
+                    Expanded(
+                        child: FilledButton(
+                            onPressed: () => setState(() {
+                                  semester = 1;
+                                  response = null;
+                                }),
+                            style: FilledButton.styleFrom(
+                                backgroundColor:
+                                    semester == 1 ? null : Colors.grey),
+                            child: const Text('Fall (1)'))),
+                    const SizedBox(width: 12),
+                    Expanded(
+                        child: FilledButton(
+                            onPressed: () => setState(() {
+                                  semester = 2;
+                                  response = null;
+                                }),
+                            style: FilledButton.styleFrom(
+                                backgroundColor:
+                                    semester == 2 ? null : Colors.grey),
+                            child: const Text('Spring (2)'))),
+                  ]),
+                  const SizedBox(height: 6),
+                  Text(
+                      sourceMode == 'class_schedule_data'
+                          ? 'Fall uses classes marked 1–4; Spring uses classes marked 1.5–4.5.'
+                          : 'Semester is used when analyzing class schedule data.',
+                      style: Theme.of(context).textTheme.bodySmall),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                       initialValue: duration,
@@ -383,6 +416,9 @@ class _FinderPageState extends State<FinderPage> {
                     Text(
                         'Best matches · ${response!['target_students']} ${response!['population_label']}',
                         style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(height: 4),
+                    Text(response!['population_assumption'] ?? '',
+                        style: Theme.of(context).textTheme.bodySmall),
                     const SizedBox(height: 8),
                     ...rows.map((r) => Card(
                         child: ListTile(
